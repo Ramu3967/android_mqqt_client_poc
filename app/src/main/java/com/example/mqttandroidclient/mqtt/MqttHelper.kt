@@ -3,14 +3,30 @@ package com.example.mqttandroidclient.mqtt
 import android.content.Context
 import org.eclipse.paho.android.service.MqttAndroidClient
 import org.eclipse.paho.client.mqttv3.IMqttActionListener
+import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken
+import org.eclipse.paho.client.mqttv3.MqttCallback
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions
 import org.eclipse.paho.client.mqttv3.MqttMessage
 
-class MqttHelper(context: Context) {
-    private lateinit var mqttAndroidClient: MqttAndroidClient
+// removing context as cons param
+class MqttHelper(
+    private val mqttAndroidClient: MqttAndroidClient
+) {
 
-    init {
-        mqttAndroidClient = MqttAndroidClient(context, "fakeServer", "fakeClientId")
+    fun initializeCallbackListener(callbackListener: MqttCallback){
+        mqttAndroidClient.setCallback(object: MqttCallback {
+            override fun connectionLost(cause: Throwable?) {
+                callbackListener.connectionLost(cause)
+            }
+
+            override fun messageArrived(topic: String?, message: MqttMessage?) {
+                callbackListener.messageArrived(topic, message)
+            }
+
+            override fun deliveryComplete(token: IMqttDeliveryToken?) {
+                callbackListener.deliveryComplete(token)
+            }
+        })
     }
 
     fun connect(username: String, password: String) {
