@@ -28,6 +28,8 @@ https://github.com/Ramu3967/android_mqqt_client_poc.git
 - Eclipse's PAHO MQTT Client for Android
 - MQTT Explorer by Thomas Nordquist to view all the active connections and disconnected packets.
 
+(NOTE- As this is just a POC, no real world logic of controlling devices is implemented)
+
 ## Demo
 
 
